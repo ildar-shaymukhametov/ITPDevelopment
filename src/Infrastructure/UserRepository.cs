@@ -13,9 +13,14 @@ public class UserRepository : IUserRepository
         this.dbContext = dbContext;
     }
 
-    public Task<List<User>> GetAllAsync()
+    public async Task<List<User>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var result = await dbContext.Users
+            .AsNoTracking()
+            .Include(x => x.Users)
+            .ToListAsync();
+
+        return result;
     }
 
     public async Task<User?> GetByIdAsync(int id)

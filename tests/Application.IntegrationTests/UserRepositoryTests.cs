@@ -57,4 +57,33 @@ public class UserRepositoryTests
             Assert.Collection(user.Users, x => Assert.Equal(firstName, x.FirstName));
         }
     }
+
+    [Fact]
+    public async Task GetAll__Returns_all_users()
+    {
+        var firstNameA = "Foo";
+        var firstNameB = "Bar";
+        User userA;
+        User userB;
+
+        using var factory = new ApplicationDbContextFactory();
+        using (var context = factory.CreateContext())
+        {
+            userA = new User { FirstName = firstNameA };
+            userB = new User { FirstName = firstNameB };
+            context.Users.Add(userA);
+            context.Users.Add(userB);
+            await context.SaveChangesAsync();
+        }
+
+        using (var context = factory.CreateContext())
+        {
+            var sut = new UserRepository(context);
+            var actual = await sut.GetAllAsync();
+
+            Assert.Collection(actual,
+                x => Assert.Equal(firstNameA, x.FirstName),
+                x => Assert.Equal(firstNameB, x.FirstName));
+        }
+    }
 }
