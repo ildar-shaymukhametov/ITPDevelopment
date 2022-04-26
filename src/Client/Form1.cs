@@ -22,7 +22,6 @@ namespace Client
             this.logger = logger;
             this.userRepository = userRepository;
             InitializeComponent();
-            logger.LogInformation("done");
         }
     }
 }
