@@ -6,23 +6,13 @@ namespace Application.IntegrationTests;
 
 public class UserRepositoryTests
 {
-    public UserRepositoryTests()
-    {
-        
-    }
-
     [Fact]
     public async Task GetById__Finds_user_by_id()
     {
         var firstName = "Foo";
+        User user;
 
         using var factory = new ApplicationDbContextFactory();
-        using (var context = factory.CreateContext())
-        {
-            await context.Database.EnsureCreatedAsync();
-        }
-
-        User user;
         using (var context = factory.CreateContext())
         {
             user = new User { FirstName = firstName };
@@ -43,14 +33,9 @@ public class UserRepositoryTests
     public async Task GetById__Loads_users_tree()
     {
         var firstName = "Foo";
+        User user;
 
         using var factory = new ApplicationDbContextFactory();
-        using (var context = factory.CreateContext())
-        {
-            await context.Database.EnsureCreatedAsync();
-        }
-
-        User user;
         using (var context = factory.CreateContext())
         {
             user = new User
