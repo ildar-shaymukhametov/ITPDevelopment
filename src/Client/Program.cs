@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using App = System.Windows.Forms.Application;
+using Microsoft.Extensions.Hosting;
+using Infrastructure;
 
 namespace Client
 {
@@ -12,12 +11,20 @@ namespace Client
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            var host = Host.CreateDefaultBuilder(args)
+                .ConfigureServices((hostBuilder, services) =>
+                {
+                    services.AddInfrastructure(hostBuilder.Configuration);
+                })
+                .Build();
+
+            App.SetHighDpiMode(HighDpiMode.SystemAware);
+            App.EnableVisualStyles();
+            App.SetCompatibleTextRenderingDefault(false);
+
+            App.Run(new Form1());
         }
     }
 }
