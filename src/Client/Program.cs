@@ -2,6 +2,9 @@ using System.Windows.Forms;
 using App = System.Windows.Forms.Application;
 using Microsoft.Extensions.Hosting;
 using Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Application;
 
 namespace Client
 {
@@ -17,6 +20,7 @@ namespace Client
                 .ConfigureServices((hostBuilder, services) =>
                 {
                     services.AddInfrastructure(hostBuilder.Configuration);
+                    services.AddTransient<IUserRepository, UserRepository>();
                 })
                 .Build();
 
@@ -24,7 +28,10 @@ namespace Client
             App.EnableVisualStyles();
             App.SetCompatibleTextRenderingDefault(false);
 
-            App.Run(new Form1());
+            App.Run(new Form1(
+                host.Services.GetRequiredService<ILogger<Form1>>(),
+                host.Services.GetRequiredService<IUserRepository>()
+            ));
         }
     }
 }
