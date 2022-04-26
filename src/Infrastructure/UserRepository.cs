@@ -5,13 +5,21 @@ namespace Infrastructure;
 
 public class UserRepository : IUserRepository
 {
+    private readonly ApplicationDbContext dbContext;
+
+    public UserRepository(ApplicationDbContext dbContext)
+    {
+        this.dbContext = dbContext;
+    }
+
     public Task<List<User>> GetAllAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<User>> GetByIdAsync(int id)
+    public async Task<User?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var entity = await dbContext.Users.FindAsync(id);
+        return entity;
     }
 }
