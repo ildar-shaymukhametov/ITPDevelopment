@@ -1,3 +1,4 @@
+using System;
 using System.Data.Common;
 using Infrastructure;
 using Microsoft.Data.Sqlite;

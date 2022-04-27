@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace Client
                 rootNode = new TreeNode(info.Name);
                 rootNode.Tag = info;
                 GetDirectories(users, rootNode);
-                treeView1.Nodes.Add(rootNode);
+                // treeView1.Nodes.Add(rootNode);
             }
         }
 
