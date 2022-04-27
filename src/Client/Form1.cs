@@ -1,67 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Application;
-using Domain;
 using Microsoft.Extensions.Logging;
 
-namespace Client
+namespace Client;
+
+public partial class Form1 : Form, IUpdateUserView
 {
-    public partial class Form1 : Form
+    private readonly IUpdateUserPresenter _updateUserPresenter;
+
+    public Form1(ILogger<Form1> logger, IUserRepository userRepository)
     {
-        private readonly ILogger<Form1> logger;
-        private readonly IUserRepository userRepository;
+        _updateUserPresenter = new UpdateUserPresenter(this);
+        InitializeComponent();
+    }
 
-        public Form1(ILogger<Form1> logger, IUserRepository userRepository)
+    private bool _submitEnabled;
+    public bool SubmitEnabled
+    { 
+        get => _submitEnabled;
+        set
         {
-            this.logger = logger;
-            this.userRepository = userRepository;
-            InitializeComponent();
+            _submitEnabled = value;
+            button1.Enabled = _submitEnabled;
         }
+    }
 
-        private async void Form1_Load(object sender, EventArgs e)
-        {
-            await PopulateTreeViewAsync();
-        }
+    private void button1_Click(object sender, EventArgs e)
+    {
 
-        private async Task PopulateTreeViewAsync()
-        {
-            TreeNode rootNode;
-            var users = await userRepository.GetAllAsync();
+    }
 
-            DirectoryInfo info = new DirectoryInfo(@"../..");
-            if (info.Exists)
-            {
-                rootNode = new TreeNode(info.Name);
-                rootNode.Tag = info;
-                GetDirectories(users, rootNode);
-                // treeView1.Nodes.Add(rootNode);
-            }
-        }
+    private void textBox1_TextChanged(object sender, EventArgs e)
+    {
+        _updateUserPresenter.FirstName = textBox1.Text;
+    }
 
-        private void GetDirectories(List<User> users, TreeNode nodeToAddTo)
-        {
-            TreeNode aNode;
-            List<User> subSubDirs;
-            foreach (var subDir in users)
-            {
-                aNode = new TreeNode(subDir.FirstName, 0, 0);
-                aNode.Tag = subDir;
-                aNode.ImageKey = "folder";
-                subSubDirs = subDir.Users.ToList();
-                if (subSubDirs.Any())
-                {
-                    GetDirectories(subSubDirs, aNode);
-                }
-                nodeToAddTo.Nodes.Add(aNode);
-            }
-        }
+    private void textBox2_TextChanged(object sender, EventArgs e)
+    {
+        _updateUserPresenter.LastName = textBox2.Text;
     }
 }
