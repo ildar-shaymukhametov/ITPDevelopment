@@ -17,20 +17,20 @@ public static class ApplicationDbContextSeed
                 LastName = "Baggins",
                 Users = new List<User>
                 {
-                    new User
+                    new()
                     {
                         FirstName = "Sam",
                         LastName = "Brave",
                         Users = new List<User>
                         {
-                            new User
+                            new()
                             {
                                 FirstName = "Gandalf",
                                 LastName = "Grey"
                             }
                         }
                     },
-                    new User
+                    new()
                     {
                         FirstName = "Aragorn",
                         LastName = "Numenor"
