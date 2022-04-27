@@ -11,6 +11,7 @@ public interface IUpdateUserPresenter
     string? LastName { get; set; }
     Task<bool> UpdateUserAsync();
     void UpdateView();
+    Task OnUserIdUpdatedAsync(int id);
 }
 
 public class UpdateUserPresenter : IUpdateUserPresenter
@@ -26,7 +27,7 @@ public class UpdateUserPresenter : IUpdateUserPresenter
         _logger = logger;
     }
 
-    public int Id { get; set; }
+    private int Id { get; set; }
 
     private string? _firstName;
     public string? FirstName
@@ -73,6 +74,19 @@ public class UpdateUserPresenter : IUpdateUserPresenter
     public void UpdateView()
     {
         _view.SubmitEnabled = AllInformationIsCollected();
+        _view.FirstName = FirstName;
+        _view.LastName = LastName;
+    }
+
+    public async Task OnUserIdUpdatedAsync(int id)
+    {
+        var user = await _userRepository.GetByIdAsync(id);
+        if (user != null)
+        {
+            Id = id;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+        }
     }
 
     private bool AllInformationIsCollected()

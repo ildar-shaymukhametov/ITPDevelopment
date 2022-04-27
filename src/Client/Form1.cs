@@ -28,11 +28,34 @@ public partial class Form1 : Form, IUpdateUserView, IUserTree
         }
     }
 
+    private string? _firstName;
+    public string? FirstName
+    {
+        get => _firstName;
+        set
+        {
+            _firstName = value;
+            textBox1.Text = _firstName;
+        }
+    }
+
+    private string? _lastName;
+    public string? LastName
+    {
+        get => _lastName;
+        set
+        {
+            _lastName = value;
+            textBox2.Text = _lastName;
+        }
+    }
+
     private async void button1_Click(object sender, EventArgs e)
     {
         var ok = await _updateUserPresenter.UpdateUserAsync();
         var message = ok ? "Изменения сохранены" : "Не удалось сохранить";
         MessageBox.Show(message);
+        await _userTreePresenter.UpdateViewAsync();
     }
 
     private void textBox1_TextChanged(object sender, EventArgs e)
@@ -45,9 +68,11 @@ public partial class Form1 : Form, IUpdateUserView, IUserTree
         _updateUserPresenter.LastName = textBox2.Text;
     }
 
-    private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+    private async void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
     {
-
+        var id = (int)e.Node.Tag;
+        await _updateUserPresenter.OnUserIdUpdatedAsync(id);
+        _updateUserPresenter.UpdateView();
     }
 
     public TreeNode[] Nodes

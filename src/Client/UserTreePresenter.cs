@@ -40,7 +40,7 @@ public class UserTreePresenter : IUserTreePresenter
         {
             if (item.ParentId == null)
             {
-                nodes.Add(new TreeNode { Tag = item.Id, Text = item.FirstName });
+                nodes.Add(new TreeNode { Tag = item.Id, Text = $"{item.FirstName} {item.LastName}" });
             }
             else
             {
@@ -57,7 +57,7 @@ public class UserTreePresenter : IUserTreePresenter
         {
             if (node.Tag.Equals(parent.ParentId))
             {
-                node.Nodes.Add(new TreeNode { Tag = parent.Id, Text = parent.FirstName });
+                node.Nodes.Add(new TreeNode { Tag = parent.Id, Text = $"{parent.FirstName} {parent.LastName}" });
             }
             else
             {
