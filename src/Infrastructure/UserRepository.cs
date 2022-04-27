@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application;
 using Domain;
@@ -32,5 +33,17 @@ public class UserRepository : IUserRepository
             .SingleOrDefaultAsync(x => x.Id == id);
 
         return result;
+    }
+
+    public async Task UpdateAsync(UpdateUserModel model)
+    {
+        var user = await dbContext.Users.FindAsync(model.Id);
+        if (user == null)
+        {
+            throw new Exception($"User with id {model.Id} not found");
+        }
+
+        dbContext.Entry(user).CurrentValues.SetValues(model);
+        await dbContext.SaveChangesAsync();
     }
 }

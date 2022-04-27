@@ -81,4 +81,31 @@ public class UserRepositoryTests
                 x => Assert.Equal(userB.FirstName, x.FirstName));
         }
     }
+
+    [Fact]
+    public async Task Update__Updates_user()
+    {
+        var user = new User { FirstName = "Foo" };
+        var newFirstName = "Bar";
+
+        using var factory = new ApplicationDbContextFactory();
+        using (var context = factory.CreateContext())
+        {
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+        }
+
+        using (var context = factory.CreateContext())
+        {
+            var sut = new UserRepository(context);
+            await sut.UpdateAsync(new UpdateUserModel
+            {
+                Id = user.Id,
+                FirstName = newFirstName
+            });
+            var actual = await context.Users.FindAsync(user.Id);
+
+            Assert.Equal(newFirstName, actual?.FirstName);
+        }
+    }
 }

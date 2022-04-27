@@ -8,4 +8,5 @@ public interface IUserRepository
 {
     public Task<User?> GetByIdAsync(int id);
     public Task<List<User>> GetAllAsync();
+    Task UpdateAsync(UpdateUserModel model);
 }
