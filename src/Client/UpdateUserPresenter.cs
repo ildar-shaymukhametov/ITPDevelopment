@@ -7,8 +7,8 @@ namespace Client;
 
 public interface IUpdateUserPresenter
 {
-    string? FirstName { get; set; }
-    string? LastName { get; set; }
+    string? FirstName { set; }
+    string? LastName { set; }
     Task<bool> UpdateUserAsync();
     void UpdateView();
     Task OnUserIdUpdatedAsync(int id);
@@ -91,6 +91,6 @@ public class UpdateUserPresenter : IUpdateUserPresenter
 
     private bool AllInformationIsCollected()
     {
-        return !string.IsNullOrWhiteSpace(_firstName) && !string.IsNullOrWhiteSpace(_lastName);
+        return !string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(LastName);
     }
 }

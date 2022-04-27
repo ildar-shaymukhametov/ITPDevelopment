@@ -17,37 +17,19 @@ public partial class Form1 : Form, IUpdateUserView, IUserTree
         _userTreePresenter = new UserTreePresenter(this, userRepository, userTreePresenterLogger);
     }
 
-    private bool _submitEnabled;
     public bool SubmitEnabled
     { 
-        get => _submitEnabled;
-        set
-        {
-            _submitEnabled = value;
-            button1.Enabled = _submitEnabled;
-        }
+        set => button1.Enabled = value;
     }
 
-    private string? _firstName;
     public string? FirstName
     {
-        get => _firstName;
-        set
-        {
-            _firstName = value;
-            textBox1.Text = _firstName;
-        }
+        set => textBox1.Text = value;
     }
 
-    private string? _lastName;
     public string? LastName
     {
-        get => _lastName;
-        set
-        {
-            _lastName = value;
-            textBox2.Text = _lastName;
-        }
+        set => textBox2.Text = value;
     }
 
     private async void button1_Click(object sender, EventArgs e)

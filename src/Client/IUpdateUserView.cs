@@ -2,7 +2,7 @@
 
 public interface IUpdateUserView
 {
-    bool SubmitEnabled { get; set; }
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
+    bool SubmitEnabled { set; }
+    public string? FirstName { set; }
+    public string? LastName { set; }
 }
