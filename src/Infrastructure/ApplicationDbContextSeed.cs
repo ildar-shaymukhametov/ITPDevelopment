@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain;
@@ -11,32 +10,12 @@ public static class ApplicationDbContextSeed
     {
         if (!context.Users.Any())
         {
-            context.Users.Add(new User
-            {
-                FirstName = "Frodo",
-                LastName = "Baggins",
-                Users = new List<User>
-                {
-                    new()
-                    {
-                        FirstName = "Sam",
-                        LastName = "Brave",
-                        Users = new List<User>
-                        {
-                            new()
-                            {
-                                FirstName = "Gandalf",
-                                LastName = "Grey"
-                            }
-                        }
-                    },
-                    new()
-                    {
-                        FirstName = "Aragorn",
-                        LastName = "Numenor"
-                    }
-                }
-            });
+            var userA = new User { FirstName = "A" };
+            var userB = new User { FirstName = "B", Parent = userA };
+            var userC = new User { FirstName = "C", Parent = userB };
+            var userD = new User { FirstName = "D" };
+
+            context.Users.AddRange(userA, userB, userC, userD);
 
             await context.SaveChangesAsync();
         }

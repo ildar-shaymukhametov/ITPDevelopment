@@ -5,15 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Client;
 
-public partial class Form1 : Form, IUpdateUserView
+public partial class Form1 : Form, IUpdateUserView, IUserTree
 {
     private readonly IUpdateUserPresenter _updateUserPresenter;
+    private readonly IUserTreePresenter _userTreePresenter;
 
-    public Form1(ILogger<UpdateUserPresenter> logger, IUserRepository userRepository)
+    public Form1(ILogger<UpdateUserPresenter> userPresenterLogger, ILogger<UserTreePresenter> userTreePresenterLogger, IUserRepository userRepository)
     {
         InitializeComponent();
-        _updateUserPresenter = new UpdateUserPresenter(this, userRepository, logger);
-        _updateUserPresenter.UpdateView();
+        _updateUserPresenter = new UpdateUserPresenter(this, userRepository, userPresenterLogger);
+        _userTreePresenter = new UserTreePresenter(this, userRepository, userTreePresenterLogger);
     }
 
     private bool _submitEnabled;
@@ -42,5 +43,25 @@ public partial class Form1 : Form, IUpdateUserView
     private void textBox2_TextChanged(object sender, EventArgs e)
     {
         _updateUserPresenter.LastName = textBox2.Text;
+    }
+
+    private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+    {
+
+    }
+
+    public TreeNode[] Nodes
+    {
+        set
+        {
+            treeView1.Nodes.Clear();
+            treeView1.Nodes.AddRange(value);
+        }
+    }
+
+    private async void Form1_Load(object sender, EventArgs e)
+    {
+        _updateUserPresenter.UpdateView();
+        await _userTreePresenter.UpdateViewAsync();
     }
 }
