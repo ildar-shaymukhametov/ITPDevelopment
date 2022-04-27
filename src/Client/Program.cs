@@ -47,7 +47,7 @@ class Program
         }
 
         App.Run(new Form1(
-            host.Services.GetRequiredService<ILogger<Form1>>(),
+            host.Services.GetRequiredService<ILogger<UpdateUserPresenter>>(),
             host.Services.GetRequiredService<IUserRepository>()
         ));
     }
