@@ -70,7 +70,11 @@ public partial class Form1 : Form, IUpdateUserView, IUserTree
 
     private async void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
     {
-        var id = (int)e.Node.Tag;
+        if (e.Node?.Tag is not int id)
+        {
+            return;
+        }
+
         await _updateUserPresenter.OnUserIdUpdatedAsync(id);
         _updateUserPresenter.UpdateView();
     }
